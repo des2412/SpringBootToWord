@@ -19,16 +19,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class HundredthConverter implements IHundConverter {
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see org.desz.inttoword.conv.IHundConverter#mapToWord(java.lang.String,
-	 * org.desz.inttoword.language.IntWordMapping)
 	 */
 	@Override
 	public Optional<String> hundredthToWord(String number, IntWordMapping langMapping) {
 		number = Objects.requireNonNull(number);
-		// contract specifies hundreths maximum.
+		// check hundredth maximum.
 		if (number.length() > 3) {
 			return Optional.empty();
 		}

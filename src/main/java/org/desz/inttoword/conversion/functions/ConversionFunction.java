@@ -29,8 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  */
 
-public class ConversionDelegate implements Function<IntToWordRequest, String> {
-	private static final Logger logger = LoggerFactory.getLogger(ConversionDelegate.class);
+public class ConversionFunction implements Function<IntToWordRequest, String> {
+	private static final Logger logger = LoggerFactory.getLogger(ConversionFunction.class);
 
 	private HundredthConverter hundredthConverter;
 
@@ -39,7 +39,7 @@ public class ConversionDelegate implements Function<IntToWordRequest, String> {
 	 * @param hundConverter the parameterised instance.
 	 */
 	@Autowired
-	public ConversionDelegate(HundredthConverter hundredthConverter) {
+	public ConversionFunction(HundredthConverter hundredthConverter) {
 		this.hundredthConverter = hundredthConverter;
 	}
 
