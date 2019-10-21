@@ -2,8 +2,10 @@ package org.desz.inttoword.factory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.Collections;
 import java.util.stream.Stream;
 import org.desz.inttoword.language.ILangProvider;
 import org.desz.inttoword.language.IntWordMapping;
@@ -27,7 +29,8 @@ import org.slf4j.LoggerFactory;
  */
 public final class ProvLangFactory implements ILangProvider {
 
-	private final Map<ProvLang, IntWordMapping> provLangStorageCache = new HashMap<ProvLang, IntWordMapping>();
+	private final Map<ProvLang, IntWordMapping> provLangMappingCache = Collections
+			.synchronizedMap(new HashMap<ProvLang, IntWordMapping>());
 
 	private static Logger log = LoggerFactory.getLogger(ProvLangFactory.class);
 
@@ -56,10 +59,12 @@ public final class ProvLangFactory implements ILangProvider {
 	}
 
 	@Override
-	public IntWordMapping getMapForProvLang(final ProvLang p_provLang) {
+	public IntWordMapping getMapForProvLang(final ProvLang pl) {
 
-		final ProvLang provLang = Objects.requireNonNull(p_provLang);
-		synchronized (provLangStorageCache) {
+		final ProvLang provLang = requireNonNull(pl);
+		if (provLangMappingCache.containsKey(provLang))
+			return provLangMappingCache.get(provLang);
+		synchronized (provLangMappingCache) {
 			IntWordMapping.Builder builder = new IntWordMapping.Builder();
 			switch (provLang) {
 			case UK:
@@ -69,10 +74,9 @@ public final class ProvLangFactory implements ILangProvider {
 				builder.withThoud(UkUnit.THOUS.val());
 				builder.withHund(UkUnit.HUNS.val());
 				builder.withAnd(UkUnit.AND.val());
-				builder.withIntToWordMap(
-						Stream.of(UkPair.values()).collect(Collectors.toMap(UkPair::getNum, UkPair::getWord)));
+				builder.withIntToWordMap(Stream.of(UkPair.values()).collect(toMap(UkPair::getNum, UkPair::getWord)));
 
-				provLangStorageCache.put(ProvLang.UK, builder.build());
+				provLangMappingCache.put(ProvLang.UK, builder.build());
 
 				break;
 			case FR:
@@ -82,9 +86,8 @@ public final class ProvLangFactory implements ILangProvider {
 				builder.withThoud(FrUnit.THOUS.val());
 				builder.withHund(FrUnit.HUNS.val());
 				builder.withAnd(FrUnit.AND.val());
-				builder.withIntToWordMap(
-						Stream.of(FrPair.values()).collect(Collectors.toMap(FrPair::getNum, FrPair::getWord)));
-				provLangStorageCache.put(ProvLang.FR, builder.build());
+				builder.withIntToWordMap(Stream.of(FrPair.values()).collect(toMap(FrPair::getNum, FrPair::getWord)));
+				provLangMappingCache.put(ProvLang.FR, builder.build());
 
 				break;
 
@@ -95,9 +98,8 @@ public final class ProvLangFactory implements ILangProvider {
 				builder.withThoud(DeUnit.THOUS.val());
 				builder.withHund(DeUnit.HUNS.val());
 				builder.withAnd(DeUnit.AND.val());
-				builder.withIntToWordMap(
-						Stream.of(DePair.values()).collect(Collectors.toMap(DePair::getNum, DePair::getWord)));
-				provLangStorageCache.put(ProvLang.DE, builder.build());
+				builder.withIntToWordMap(Stream.of(DePair.values()).collect(toMap(DePair::getNum, DePair::getWord)));
+				provLangMappingCache.put(ProvLang.DE, builder.build());
 				break;
 
 			case NL:
@@ -107,9 +109,8 @@ public final class ProvLangFactory implements ILangProvider {
 				builder.withThoud(NlUnit.THOUS.val());
 				builder.withHund(NlUnit.HUNS.val());
 				builder.withAnd(NlUnit.AND.val());
-				builder.withIntToWordMap(
-						Stream.of(NlPair.values()).collect(Collectors.toMap(NlPair::getNum, NlPair::getWord)));
-				provLangStorageCache.put(ProvLang.NL, builder.build());
+				builder.withIntToWordMap(Stream.of(NlPair.values()).collect(toMap(NlPair::getNum, NlPair::getWord)));
+				provLangMappingCache.put(ProvLang.NL, builder.build());
 
 				break;
 
@@ -119,7 +120,7 @@ public final class ProvLangFactory implements ILangProvider {
 
 			}
 		}
-		return provLangStorageCache.get(provLang);
+		return provLangMappingCache.get(provLang);
 	}
 
 }

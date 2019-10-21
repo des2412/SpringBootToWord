@@ -3,12 +3,9 @@
  */
 package org.desz.inttoword.language;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-
-//import com.google.common.base.Preconditions;
 
 /**
  * @author des
@@ -17,8 +14,6 @@ import org.apache.commons.lang3.StringUtils;
  * 
  *         Enforces the creation of a valid IntWordMapping instance where nulls
  *         for instance variables are not allowed.
- * 
- *         TODO: check for empty Strings etc.
  * 
  */
 public final class IntWordMapping {
@@ -75,13 +70,12 @@ public final class IntWordMapping {
 	}
 
 	/**
-	 * @return word mapped to num orElse -> empty String.
+	 * @return word for num orElse -> empty String.
 	 */
-	public String wordForNum(int num) {
-		Map<String, String> empty = new HashMap<>();
-		empty.put(StringUtils.EMPTY, StringUtils.EMPTY);
-		return intToWordMap.entrySet().stream().filter(s -> s.getKey().equals(String.valueOf(num))).findFirst()
-				.orElse(empty.entrySet().iterator().next()).getValue();
+	public String wordForNum(final int num) {
+		final String s = String.valueOf(num);
+		return intToWordMap.containsKey(s) ? intToWordMap.get(s) : StringUtils.EMPTY;
+
 	}
 
 	public static class Builder {
@@ -124,26 +118,9 @@ public final class IntWordMapping {
 		}
 
 		public IntWordMapping build() {
-			// validate();
 			return new IntWordMapping(this);
 		}
 
-		/*
-		 * private void validate() {
-		 * Preconditions.checkArgument(!StringUtils.isBlank(milln),
-		 * "milln may not be blank");
-		 * Preconditions.checkArgument(!StringUtils.isBlank(thoud),
-		 * "thoud may not be blank");
-		 * Preconditions.checkArgument(!StringUtils.isBlank(hund),
-		 * "hund may not be blank");
-		 * Preconditions.checkArgument(!StringUtils.isBlank(and),
-		 * "and may not be blank");
-		 * Preconditions.checkArgument(!StringUtils.isBlank(billn),
-		 * "billn may not be blank");
-		 * 
-		 * Preconditions.checkArgument(!intToWordMap.isEmpty(),
-		 * "Integer Word Map is empty."); }
-		 */
 	}
 
 }

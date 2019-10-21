@@ -1,4 +1,4 @@
-package org.desz.inttoword.conv;
+package org.desz.inttoword.conversion.functions;
 
 import static org.desz.inttoword.factory.ProvLangFactory.getInstance;
 import static org.junit.Assert.assertNotNull;

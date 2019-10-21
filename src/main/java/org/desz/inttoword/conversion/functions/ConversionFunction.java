@@ -1,19 +1,21 @@
 package org.desz.inttoword.conversion.functions;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toMap;
 import static org.desz.inttoword.factory.ProvLangFactory.getInstance;
 
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
+import static java.util.Objects.nonNull;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import static java.util.stream.IntStream.range;
 
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import org.desz.inttoword.IntToWordRequest;
 import org.desz.inttoword.exceptions.AppConversionException;
 import org.desz.inttoword.language.IntWordMapping;
@@ -25,7 +27,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author des Converts integer to corresponding word format in ProvLang
+ * @author des ConversionFunction: Function interface -> Integer to
+ *         corresponding word specified by ProvLang
  * 
  */
 
@@ -44,10 +47,10 @@ public class ConversionFunction implements Function<IntToWordRequest, String> {
 	}
 
 	/**
-	 * Function funcHunConv.
+	 * BiFunction funcHunConv.
 	 */
 	private BiFunction<String, IntWordMapping, String> funcHunConv = (x, y) -> {
-		return hundredthConverter.hundredthToWord(x, y).orElse(StringUtils.EMPTY);
+		return hundredthConverter.hundredthToWord(x, y).orElse(EMPTY);
 	};
 
 	/**
@@ -57,10 +60,10 @@ public class ConversionFunction implements Function<IntToWordRequest, String> {
 	 * @throws AppConversionException
 	 */
 
-	public String convertIntToWord(Integer n, ProvLang p_provLang) throws AppConversionException {
+	public String convertIntToWord(Integer n, ProvLang pl) throws AppConversionException {
 
-		n = Objects.requireNonNull(n, "Integer parameter required to be non-null");
-		final ProvLang provLang = Objects.requireNonNull(p_provLang);
+		n = requireNonNull(n, "Integer parameter required to be non-null");
+		final ProvLang provLang = requireNonNull(pl);
 		if (provLang.equals(ProvLang.EMPTY))
 			throw new AppConversionException();
 		final List<String> numUnits = asList(NumberFormat.getIntegerInstance(Locale.UK).format(n).split(","));
@@ -71,8 +74,8 @@ public class ConversionFunction implements Function<IntToWordRequest, String> {
 		// singleton IntWordMapping per ProvLang.
 		final IntWordMapping langMap = getInstance().getMapForProvLang(provLang);
 		// convert each hundredth to word.
-		final Map<Integer, String> wordMap = IntStream.range(0, sz).boxed()
-				.collect(Collectors.toMap(Function.identity(), i -> funcHunConv.apply(numUnits.get(i), langMap)));
+		final Map<Integer, String> wordMap = range(0, sz).boxed()
+				.collect(toMap(Function.identity(), i -> funcHunConv.apply(numUnits.get(i), langMap)));
 
 		final WordResult.Builder wordBuilder = new WordResult.Builder();
 
@@ -116,13 +119,13 @@ public class ConversionFunction implements Function<IntToWordRequest, String> {
 		// decorate DE word.
 		if (provLang.equals(ProvLang.DE)) {
 			WordResult.Builder deBuilder = new WordResult.Builder();
-			if (Objects.nonNull(wordResult.getBill()))
+			if (nonNull(wordResult.getBill()))
 				deBuilder.withBill(wordResult.getBill().trim());
-			if (Objects.nonNull(wordResult.getMill()))
+			if (nonNull(wordResult.getMill()))
 				deBuilder.withMill(wordResult.getMill().trim());
-			if (Objects.nonNull(wordResult.getThou()))
+			if (nonNull(wordResult.getThou()))
 				deBuilder.withThou(wordResult.getThou());
-			if (Objects.nonNull(wordResult.getHund()))
+			if (nonNull(wordResult.getHund()))
 				deBuilder.withHund(wordMap.get(sz - 1));
 			deDecorator = new DeDecorator(deBuilder.build());
 			WordResult deRes = deDecorator.pluraliseUnitRule();
@@ -133,7 +136,7 @@ public class ConversionFunction implements Function<IntToWordRequest, String> {
 			deDecorator = new DeDecorator(deRes);
 			deRes = deDecorator.combineThouHundRule();
 			// trim, multi to single whitespace.
-			return StringUtils.normalizeSpace(deRes.toString());
+			return normalizeSpace(deRes.toString());
 
 		}
 
@@ -154,6 +157,7 @@ public class ConversionFunction implements Function<IntToWordRequest, String> {
 			logger.error(e.getMessage());
 			result = e.getMessage();
 		}
+		logger.info("function calc. {}", result);
 		return result;
 	}
 

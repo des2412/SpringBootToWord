@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,20 +27,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IntConverterRestController {
 	private static final Logger logger = LoggerFactory.getLogger(IntConverterRestController.class);
-	private ConversionFunction conversionDelegate;
+	private ConversionFunction conversionFunction;
 
 	@Autowired
-	public IntConverterRestController(ConversionFunction conversionDelegate) {
+	public IntConverterRestController(ConversionFunction conversionFunction) {
 
-		this.conversionDelegate = conversionDelegate;
+		this.conversionFunction = conversionFunction;
 	}
 
-	@GetMapping(path = "/convert-int")
+	@PostMapping(path = "/convert-int")
 	public ResponseEntity<String> convertToWord(@Valid @RequestParam final Integer input, @RequestParam String lang) {
 
 		String str = StringUtils.EMPTY;
 		try {
-			str = conversionDelegate.convertIntToWord(input, ProvLang.valueOf(lang));
+			str = conversionFunction.convertIntToWord(input, ProvLang.valueOf(lang));
 		} catch (AppConversionException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(str, BAD_REQUEST);
