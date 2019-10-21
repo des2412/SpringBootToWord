@@ -3,15 +3,15 @@ package org.desz.inttoword.output;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.desz.inttoword.conv.HundConverter;
-import org.desz.inttoword.conv.ConversionDelegate;
+import org.desz.inttoword.conversion.functions.ConversionDelegate;
+import org.desz.inttoword.conversion.functions.HundredthConverter;
 import org.desz.inttoword.exceptions.AppConversionException;
 import org.desz.inttoword.language.ProvLang;
 import org.junit.Test;
 
 public class TestConversionDelegateUk {
 
-	protected ConversionDelegate delegate = new ConversionDelegate(new HundConverter());
+	protected ConversionDelegate delegate = new ConversionDelegate(new HundredthConverter());
 	private static final String MAX_INT = "two billion one hundred and forty seven million four hundred and eighty three thousand six hundred and forty seven";
 
 	@Test(expected = NullPointerException.class)

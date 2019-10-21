@@ -1,21 +1,23 @@
 /**
  * 
  */
-package org.desz.inttoword.conv;
+package org.desz.inttoword.conversion.functions;
 
 import static org.desz.inttoword.language.Punct.SPC;
 
 import java.util.Objects;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import org.desz.inttoword.language.IntWordMapping;
+import org.springframework.stereotype.Component;
 
 /**
  * @author des
  *
  */
-public class HundConverter implements IHundConverter {
+@Component
+public class HundredthConverter implements IHundConverter {
 
 	/*
 	 * (non-Javadoc)
@@ -24,7 +26,7 @@ public class HundConverter implements IHundConverter {
 	 * org.desz.inttoword.language.IntWordMapping)
 	 */
 	@Override
-	public Optional<String> hundrethToWord(String number, IntWordMapping langMapping) {
+	public Optional<String> hundredthToWord(String number, IntWordMapping langMapping) {
 		number = Objects.requireNonNull(number);
 		// contract specifies hundreths maximum.
 		if (number.length() > 3) {
@@ -32,7 +34,7 @@ public class HundConverter implements IHundConverter {
 		}
 		final int n = Integer.parseInt(number);
 		final String word = langMapping.wordForNum(n);
-		if (!word.equals(StringUtils.EMPTY))
+		if (!word.equals(EMPTY))
 			return Optional.of(word.toLowerCase());
 
 		String hun = (langMapping.wordForNum(n / 100) + langMapping.getHund()).toLowerCase();
@@ -41,7 +43,7 @@ public class HundConverter implements IHundConverter {
 			return Optional.of(hun.toLowerCase());
 
 		if (n < 100)
-			hun = StringUtils.EMPTY;
+			hun = EMPTY;
 		else
 			hun += SPC.val() + langMapping.getAnd();
 
@@ -49,7 +51,7 @@ public class HundConverter implements IHundConverter {
 
 		int nmod = n % 100;
 		final String rem = langMapping.wordForNum(nmod).toLowerCase();
-		if (!rem.equals(StringUtils.EMPTY))
+		if (!rem.equals(EMPTY))
 			return Optional.of(hun + rem);// e.g., 110,
 											// 120..190.
 

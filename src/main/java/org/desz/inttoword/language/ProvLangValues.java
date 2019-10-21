@@ -168,6 +168,7 @@ public final class ProvLangValues {
 		NULL_INPUT("Aucun numero de convertir"), UNKNOWN("erreur inconnue"),
 		NEGATIVE_INPUT("Entier négatif non autorisé"), NUMBER_FORMAT("Exception Format de nombre.. Entier trop grand"),
 		LANG_ERR("Sélectionnez une langue valide");
+
 		private String error;
 
 		private FrError(String error) {
@@ -190,6 +191,7 @@ public final class ProvLangValues {
 		INVALID_INPUT("ungültige Eingabe"), INVALID_NUMBER("Gebrochene oder nicht ganze Zahlen aberkannt"),
 		NULL_INPUT("null-Eingang"), UNKNOWN("unbekannter Fehler"), NEGATIVE_INPUT("Negative Integer nicht erlaubt"),
 		NUMBER_FORMAT("Zahlenformat Ausnahme.. Integer zu groß"), LANG_ERR("Wählen Sie eine gültige Sprache");
+
 		private String error;
 
 		private DeError(String error) {
@@ -212,6 +214,7 @@ public final class ProvLangValues {
 		INVALID_INPUT("Ongeldige Invoer"), INVALID_NUMBER("Fractionele of niet-gehele getallen niet toegestaan"),
 		NULL_INPUT("null-Eingang"), UNKNOWN("Onbekende Fout"), NEGATIVE_INPUT("Negatieve Integer niet toegestaan"),
 		NUMBER_FORMAT("Getalnotatie Uitzondering..Integer te groot"), LANG_ERR("Selecteer een geldige taal");
+
 		private String error;
 
 		private NlError(String error) {

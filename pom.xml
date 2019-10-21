@@ -1,63 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.8.RELEASE</version>
+		<version>2.1.6.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.desz.integer.convertor</groupId>
-	<artifactId>to-word</artifactId>
+	<groupId>org.desz.serverless</groupId>
+	<artifactId>spring-cloud-func-convert-int</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>annuity</name>
-	<description>Spring Boot Rest-type application</description>
+	<name>spring-cloud-function-convert-int</name>
+	<description>Demo project for Spring Boot with Spring  Cloud Function</description>
 
 	<properties>
 		<java.version>1.8</java.version>
-		<downloadSources>true</downloadSources>
-		<downloadJavadocs>false</downloadJavadocs>
+		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-function-web</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>2.1.9.RELEASE</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-function-compiler</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Greenwich.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<addResources>true</addResources>
-				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 

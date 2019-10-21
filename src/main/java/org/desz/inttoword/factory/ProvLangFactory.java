@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.log4j.Logger;
 import org.desz.inttoword.language.ILangProvider;
 import org.desz.inttoword.language.IntWordMapping;
 import org.desz.inttoword.language.ProvLang;
@@ -18,6 +16,8 @@ import org.desz.inttoword.language.ProvLangValues.NlPair;
 import org.desz.inttoword.language.ProvLangValues.NlUnit;
 import org.desz.inttoword.language.ProvLangValues.UkPair;
 import org.desz.inttoword.language.ProvLangValues.UkUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Factory for numeric and error values associated to supported ProvLang.
@@ -29,7 +29,7 @@ public final class ProvLangFactory implements ILangProvider {
 
 	private final Map<ProvLang, IntWordMapping> provLangStorageCache = new HashMap<ProvLang, IntWordMapping>();
 
-	private static Logger log = Logger.getLogger(ProvLangFactory.class);
+	private static Logger log = LoggerFactory.getLogger(ProvLangFactory.class);
 
 	/**
 	 * enforce singleton contract.

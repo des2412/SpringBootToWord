@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.base.Preconditions;
+//import com.google.common.base.Preconditions;
 
 /**
  * @author des
@@ -124,19 +124,26 @@ public final class IntWordMapping {
 		}
 
 		public IntWordMapping build() {
-			validate();
+			// validate();
 			return new IntWordMapping(this);
 		}
 
-		private void validate() {
-			Preconditions.checkArgument(!StringUtils.isBlank(milln), "milln may not be blank");
-			Preconditions.checkArgument(!StringUtils.isBlank(thoud), "thoud may not be blank");
-			Preconditions.checkArgument(!StringUtils.isBlank(hund), "hund may not be blank");
-			Preconditions.checkArgument(!StringUtils.isBlank(and), "and may not be blank");
-			Preconditions.checkArgument(!StringUtils.isBlank(billn), "billn may not be blank");
-
-			Preconditions.checkArgument(!intToWordMap.isEmpty(), "Integer Word Map is empty.");
-		}
+		/*
+		 * private void validate() {
+		 * Preconditions.checkArgument(!StringUtils.isBlank(milln),
+		 * "milln may not be blank");
+		 * Preconditions.checkArgument(!StringUtils.isBlank(thoud),
+		 * "thoud may not be blank");
+		 * Preconditions.checkArgument(!StringUtils.isBlank(hund),
+		 * "hund may not be blank");
+		 * Preconditions.checkArgument(!StringUtils.isBlank(and),
+		 * "and may not be blank");
+		 * Preconditions.checkArgument(!StringUtils.isBlank(billn),
+		 * "billn may not be blank");
+		 * 
+		 * Preconditions.checkArgument(!intToWordMap.isEmpty(),
+		 * "Integer Word Map is empty."); }
+		 */
 	}
 
 }
